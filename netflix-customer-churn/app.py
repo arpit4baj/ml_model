@@ -47,9 +47,9 @@ region = st.sidebar.selectbox("Region", options=["North America", "Europe", "Asi
 device = st.sidebar.selectbox("Preferred Streaming Device", options=["Smart TV", "Mobile", "Laptop", "Tablet"])
 monthly_fee = st.sidebar.number_input("Monthly Subscription Fee ($)", min_value=5.00, max_value=30.00, value=15.49, step=0.50)
 payment_method = st.sidebar.selectbox("Payment Method", options=["Credit Card", "PayPal", "Direct Debit", "Gift Card"])
+favorite_genre = st.sidebar.selectbox("Favorite Genre Category", options=["Sci-Fi", "Action", "Comedy", "Drama", "Documentary", "Thriller"])
 number_of_profiles = st.sidebar.slider("Number of Profiles on Account", min_value=1, max_value=5, value=3)
 avg_watch_time_per_day = st.sidebar.slider("Average Watch Time Per Day (Hours)", min_value=0.1, max_value=12.0, value=2.2)
-favorite_genre = st.sidebar.selectbox("Favorite Genre Category", options=["Sci-Fi", "Action", "Comedy", "Drama", "Documentary", "Thriller"])
 
 # Auto-compute engineered features matching main.py logic
 engagement_score = watch_hours * avg_watch_time_per_day
