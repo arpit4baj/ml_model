@@ -182,9 +182,13 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+
 # 1. Get the absolute path of the directory containing app.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
+def get_chart_path(filename):
+    """Helper to get the absolute path for charts."""
+    return os.path.join(BASE_DIR, "outputs", "charts", filename)
 @st.cache_resource
 def load_churn_model():
     # 2. Dynamically combine the paths so it works perfectly both locally and in the cloud
@@ -576,84 +580,76 @@ with tab1:
 # ==========================================
 with tab2:
     st.markdown('<div class="section-title">📈 Trained Model Performance & Correlations</div>', unsafe_allow_html=True)
+ 
+col_img1, col_img2 = st.columns(2)
+with col_img1:
+    path = get_chart_path("feature_importance.png")
+    if os.path.exists(path):
+        st.image(path, caption="Feature Importance: What drives customer churn?", use_container_width=True)
+    else:
+        st.warning(f"Chart not found: {path}")
+        
+with col_img2:
+    path = get_chart_path("correlation_heatmap.png")
+    if os.path.exists(path):
+        st.image(path, caption="Correlation Matrix of Numeric Variables", use_container_width=True)
+    else:
+        st.warning(f"Chart not found: {path}")
+
+st.markdown('<div class="section-title">📊 Demographic & Behavioral Insights Explorer</div>', unsafe_allow_html=True)
+ 
+insight_chart = st.selectbox(
+    "Choose an exploratory chart to view customer statistics:",
+    options=[
+        "Select an analytical visualization...",
+        "Churn Distribution & Percentage",
+        "Churn Rate by Subscription Type",
+        "Churn Rate by Region",
+        "Churn Rate by Device",
+        "Churn Rate by Payment Method",
+        "Churn Rate by Favorite Genre",
+        "Age Distribution by Churn Status",
+        "Monthly Fee Distribution by Churn Status",
+        "Watch Hours Distribution by Churn Status",
+        "Days Since Last Login Distribution"
+    ]
+)
+
+# Mapping selections to filenames for cleaner code
+chart_map = {
+    "Churn Distribution & Percentage": ["churn_distribution.png", "churn_percentage.png"],
+    "Churn Rate by Subscription Type": "churn_by_subscription_type.png",
+    "Churn Rate by Region": "churn_by_region.png",
+    "Churn Rate by Device": "churn_by_device.png",
+    "Churn Rate by Payment Method": "churn_by_payment_method.png",
+    "Churn Rate by Favorite Genre": "churn_by_favorite_genre.png",
+    "Age Distribution by Churn Status": "age_distribution.png",
+    "Monthly Fee Distribution by Churn Status": "fee_distribution.png",
+    "Watch Hours Distribution by Churn Status": "watch_hours_distribution.png",
+    "Days Since Last Login Distribution": "last_login_distribution.png"
+}
+
+if insight_chart != "Select an analytical visualization..." and insight_chart in chart_map:
+    filenames = chart_map[insight_chart]
     
-    col_img1, col_img2 = st.columns(2)
-    with col_img1:
-        if os.path.exists("outputs/charts/feature_importance.png"):
-            st.image("outputs/charts/feature_importance.png", caption="Feature Importance: What drives customer churn?", use_container_width=True)
-        else:
-            st.warning("Feature importance chart not found. Please run main.py training script.")
-            
-    with col_img2:
-        if os.path.exists("outputs/charts/correlation_heatmap.png"):
-            st.image("outputs/charts/correlation_heatmap.png", caption="Correlation Matrix of Numeric Variables", use_container_width=True)
-        else:
-            st.warning("Correlation heatmap not found. Please run main.py training script.")
-            
-    st.markdown('<div class="section-title">📊 Demographic & Behavioral Insights Explorer</div>', unsafe_allow_html=True)
-    
-    insight_chart = st.selectbox(
-        "Choose an exploratory chart to view customer statistics:",
-        options=[
-            "Select an analytical visualization...",
-            "Churn Distribution & Percentage",
-            "Churn Rate by Subscription Type",
-            "Churn Rate by Region",
-            "Churn Rate by Device",
-            "Churn Rate by Payment Method",
-            "Churn Rate by Favorite Genre",
-            "Age Distribution by Churn Status",
-            "Monthly Fee Distribution by Churn Status",
-            "Watch Hours Distribution by Churn Status",
-            "Days Since Last Login Distribution"
-        ]
-    )
-    
-    if insight_chart == "Churn Distribution & Percentage":
+    # Handle single or double column layouts
+    if isinstance(filenames, list):
         col_c1, col_c2 = st.columns(2)
         with col_c1:
-            if os.path.exists("outputs/charts/churn_distribution.png"):
-                st.image("outputs/charts/churn_distribution.png", caption="Churn Distribution Count", use_container_width=True)
+            path = get_chart_path(filenames[0])
+            if os.path.exists(path): st.image(path, use_container_width=True)
         with col_c2:
-            if os.path.exists("outputs/charts/churn_percentage.png"):
-                st.image("outputs/charts/churn_percentage.png", caption="Churn Percentage Rate", use_container_width=True)
-                
-    elif insight_chart == "Churn Rate by Subscription Type":
-        if os.path.exists("outputs/charts/churn_by_subscription_type.png"):
-            st.image("outputs/charts/churn_by_subscription_type.png", caption="Subscription Churn Impact", use_container_width=True)
-            
-    elif insight_chart == "Churn Rate by Region":
-        if os.path.exists("outputs/charts/churn_by_region.png"):
-            st.image("outputs/charts/churn_by_region.png", caption="Regional Churn Impact", use_container_width=True)
-            
-    elif insight_chart == "Churn Rate by Device":
-        if os.path.exists("outputs/charts/churn_by_device.png"):
-            st.image("outputs/charts/churn_by_device.png", caption="Streaming Device Churn Impact", use_container_width=True)
-            
-    elif insight_chart == "Churn Rate by Payment Method":
-        if os.path.exists("outputs/charts/churn_by_payment_method.png"):
-            st.image("outputs/charts/churn_by_payment_method.png", caption="Payment Method Churn Impact", use_container_width=True)
-            
-    elif insight_chart == "Churn Rate by Favorite Genre":
-        if os.path.exists("outputs/charts/churn_by_favorite_genre.png"):
-            st.image("outputs/charts/churn_by_favorite_genre.png", caption="Favorite Genre Churn Impact", use_container_width=True)
-            
-    elif insight_chart == "Age Distribution by Churn Status":
-        if os.path.exists("outputs/charts/age_distribution.png"):
-            st.image("outputs/charts/age_distribution.png", caption="Age distribution between loyal and churned customers", use_container_width=True)
-            
-    elif insight_chart == "Monthly Fee Distribution by Churn Status":
-        if os.path.exists("outputs/charts/fee_distribution.png"):
-            st.image("outputs/charts/fee_distribution.png", caption="How price details correlate with churn status", use_container_width=True)
-            
-    elif insight_chart == "Watch Hours Distribution by Churn Status":
-        if os.path.exists("outputs/charts/watch_hours_distribution.png"):
-            st.image("outputs/charts/watch_hours_distribution.png", caption="Customer watch hours correlation with churn", use_container_width=True)
-            
-    elif insight_chart == "Days Since Last Login Distribution":
-        if os.path.exists("outputs/charts/last_login_distribution.png"):
-            st.image("outputs/charts/last_login_distribution.png", caption="Inactivity frequency distribution", use_container_width=True)
-
+            path = get_chart_path(filenames[1])
+            if os.path.exists(path): st.image(path, use_container_width=True)
+    else:
+        path = get_chart_path(filenames)
+        if os.path.exists(path):
+            st.image(path, use_container_width=True)
+        else:
+            st.warning(f"Chart not found: {path}")
+# ==========================================
+# TAB 3: RETENTION PLAYBOOK
+# ==========================================
 # ==========================================
 # TAB 3: RETENTION PLAYBOOK
 # ==========================================
@@ -680,7 +676,7 @@ with tab3:
     
     #### 🔴 HIGH RISK CUSTOMERS (Probability > 70%)
     **Goal: Immediate Plan Interventions & Active Account Saves**
-    * **Plan Tier Optimization**: If the user pays a high fee ($15+) but has few active profiles, offer a plan downgrade option: *\"Downgrade to Standard and save $4.00/month!\"*
-    * **Automated Recovery Campaigns**: If last login days is greater than 30, trigger a *\"We Miss You\"* marketing email with direct deep-links to resume shows they left incomplete.
+    * **Plan Tier Optimization**: If the user pays a high fee ($15+) but has few active profiles, offer a plan downgrade option: *"Downgrade to Standard and save $4.00/month!"*
+    * **Automated Recovery Campaigns**: If last login days is greater than 30, trigger a *"We Miss You"* marketing email with direct deep-links to resume shows they left incomplete.
     * **One-click Value Boost**: Deliver temporary 1-month trial extensions or loyalty discounts to high-value customers showing signs of immediate cancellation.
     """), unsafe_allow_html=True)
