@@ -182,11 +182,14 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+# 1. Get the absolute path of the directory containing app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Cache model loader
 @st.cache_resource
 def load_churn_model():
-    return joblib.load("models/best_netflix_churn_model.pkl")
+    # 2. Dynamically combine the paths so it works perfectly both locally and in the cloud
+    model_path = os.path.join(BASE_DIR, "models", "best_netflix_churn_model.pkl")
+    return joblib.load(model_path)
 
 try:
     model_pipeline = load_churn_model()
