@@ -191,7 +191,8 @@ def load_churn_model():
 try:
     model_pipeline = load_churn_model()
 except Exception as e:
-    st.error("Error loading model. Please run the `main.py` script first to fit and export the pipeline model binary.")
+    st.error(f"Critical Error loading model: {e}")
+    st.exception(e) # This will print the full traceback on your Streamlit page!
     st.stop()
 
 # Helper function to strip indentation and newlines to prevent markdown code block formatting
