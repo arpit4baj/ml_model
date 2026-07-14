@@ -15,11 +15,6 @@ Thumbs.db
 # IDE
 .vscode/
 
-# Trained Models (optional)
-models/*.pkl
-
-# Generated outputs (optional)
-outputs/
 
 # Environment Variables
 .env
