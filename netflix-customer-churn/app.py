@@ -581,26 +581,26 @@ with tab1:
 with tab2:
     st.markdown('<div class="section-title">📈 Trained Model Performance & Correlations</div>', unsafe_allow_html=True)
  
-col_img1, col_img2 = st.columns(2)
-with col_img1:
-    path = get_chart_path("feature_importance.png")
-    if os.path.exists(path):
-        st.image(path, caption="Feature Importance: What drives customer churn?", use_container_width=True)
-    else:
-        st.warning(f"Chart not found: {path}")
+    col_img1, col_img2 = st.columns(2)
+    with col_img1:
+        path = get_chart_path("feature_importance.png")
+        if os.path.exists(path):
+            st.image(path, caption="Feature Importance: What drives customer churn?", use_container_width=True)
+        else:
+            st.warning(f"Chart not found: {path}")
         
-with col_img2:
-    path = get_chart_path("correlation_heatmap.png")
-    if os.path.exists(path):
-        st.image(path, caption="Correlation Matrix of Numeric Variables", use_container_width=True)
-    else:
+    with col_img2:
+        path = get_chart_path("correlation_heatmap.png")
+        if os.path.exists(path):
+            st.image(path, caption="Correlation Matrix of Numeric Variables", use_container_width=True)
+        else:
         st.warning(f"Chart not found: {path}")
 
-st.markdown('<div class="section-title">📊 Demographic & Behavioral Insights Explorer</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📊 Demographic & Behavioral Insights Explorer</div>', unsafe_allow_html=True)
  
-insight_chart = st.selectbox(
-    "Choose an exploratory chart to view customer statistics:",
-    options=[
+    insight_chart = st.selectbox(
+        "Choose an exploratory chart to view customer statistics:",
+        options=[
         "Select an analytical visualization...",
         "Churn Distribution & Percentage",
         "Churn Rate by Subscription Type",
@@ -612,11 +612,11 @@ insight_chart = st.selectbox(
         "Monthly Fee Distribution by Churn Status",
         "Watch Hours Distribution by Churn Status",
         "Days Since Last Login Distribution"
-    ]
-)
+        ]
+    )
 
 # Mapping selections to filenames for cleaner code
-chart_map = {
+    chart_map = {
     "Churn Distribution & Percentage": ["churn_distribution.png", "churn_percentage.png"],
     "Churn Rate by Subscription Type": "churn_by_subscription_type.png",
     "Churn Rate by Region": "churn_by_region.png",
@@ -627,26 +627,26 @@ chart_map = {
     "Monthly Fee Distribution by Churn Status": "fee_distribution.png",
     "Watch Hours Distribution by Churn Status": "watch_hours_distribution.png",
     "Days Since Last Login Distribution": "last_login_distribution.png"
-}
+    }
 
-if insight_chart != "Select an analytical visualization..." and insight_chart in chart_map:
-    filenames = chart_map[insight_chart]
+    if insight_chart != "Select an analytical visualization..." and insight_chart in chart_map:
+        filenames = chart_map[insight_chart]
     
-    # Handle single or double column layouts
-    if isinstance(filenames, list):
-        col_c1, col_c2 = st.columns(2)
-        with col_c1:
-            path = get_chart_path(filenames[0])
-            if os.path.exists(path): st.image(path, use_container_width=True)
-        with col_c2:
+        # Handle single or double column layouts
+        if isinstance(filenames, list):
+            col_c1, col_c2 = st.columns(2)
+            with col_c1:
+               path = get_chart_path(filenames[0])
+                if os.path.exists(path): st.image(path, use_container_width=True)
+            with col_c2:
             path = get_chart_path(filenames[1])
             if os.path.exists(path): st.image(path, use_container_width=True)
-    else:
-        path = get_chart_path(filenames)
-        if os.path.exists(path):
-            st.image(path, use_container_width=True)
         else:
-            st.warning(f"Chart not found: {path}")
+            path = get_chart_path(filenames)
+            if os.path.exists(path):
+               st.image(path, use_container_width=True)
+            else:
+               st.warning(f"Chart not found: {path}")
 # ==========================================
 # TAB 3: RETENTION PLAYBOOK
 # ==========================================
