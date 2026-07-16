@@ -186,7 +186,9 @@ st.markdown("""
 
 # 1. Get the absolute path of the directory containing app.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
+def get_chart_path(filename):
+    """Helper to get the absolute path for charts."""
+    return os.path.join(BASE_DIR, "outputs", "charts", filename)
 @st.cache_resource
 def load_churn_model():
     # 2. Dynamically combine the paths so it works perfectly both locally and in the cloud
@@ -576,9 +578,6 @@ with tab1:
 # ==========================================
 # TAB 2: MODEL ANALYTICS & INSIGHTS
 # ==========================================
-def get_chart_path(filename):
-    """Helper to get the absolute path for charts."""
-    return os.path.join(BASE_DIR, "outputs", "charts", filename)
 with tab2:
     st.markdown('<div class="section-title">📈 Trained Model Performance & Correlations</div>', unsafe_allow_html=True)
  
