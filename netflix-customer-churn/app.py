@@ -582,19 +582,20 @@ with tab2:
     st.markdown('<div class="section-title">📈 Trained Model Performance & Correlations</div>', unsafe_allow_html=True)
  
     col_img1, col_img2 = st.columns(2)
+    
     with col_img1:
         path = get_chart_path("feature_importance.png")
         if os.path.exists(path):
             st.image(path, caption="Feature Importance: What drives customer churn?", use_container_width=True)
         else:
             st.warning(f"Chart not found: {path}")
-        
+            
     with col_img2:
         path = get_chart_path("correlation_heatmap.png")
         if os.path.exists(path):
             st.image(path, caption="Correlation Matrix of Numeric Variables", use_container_width=True)
         else:
-        st.warning(f"Chart not found: {path}")
+            st.warning(f"Chart not found: {path}")
 
     st.markdown('<div class="section-title">📊 Demographic & Behavioral Insights Explorer</div>', unsafe_allow_html=True)
  
