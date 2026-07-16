@@ -638,7 +638,7 @@ with tab2:
             col_c1, col_c2 = st.columns(2)
             with col_c1:
                path = get_chart_path(filenames[0])
-                if os.path.exists(path): st.image(path, use_container_width=True)
+            if os.path.exists(path): st.image(path, use_container_width=True)
             with col_c2:
             path = get_chart_path(filenames[1])
             if os.path.exists(path): st.image(path, use_container_width=True)
